@@ -16,12 +16,12 @@ pipeline {
                 sh 'npm run build'
             }
         }
-    stage('Making image') {
-        steps {
-            sh 'docker login -uddtrampdocker -pabs122825618',
-            sh 'cd /var/jenkins_home/workspace/${JOB_NAME} docker build -t ddtrampdocker/test:${VERSION} . && docker push ddtrampdocker/test:${VERSION}'
+        stage('Making image') {
+            steps {
+                sh 'docker login -uddtrampdocker -pabs122825618',
+                sh 'cd /var/jenkins_home/workspace/${JOB_NAME} docker build -t ddtrampdocker/test:${VERSION} . && docker push ddtrampdocker/test:${VERSION}'
+            }
         }
-    }
     //     stage('Deliver') { 
     //         steps {
     //             sh './jenkins/scripts/deliver.sh' 
@@ -29,5 +29,5 @@ pipeline {
     //             sh './jenkins/scripts/kill.sh' 
     //         }
     //     }
-    // }
+    }
 }
