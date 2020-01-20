@@ -19,7 +19,7 @@ pipeline {
         stage('Making image') {
             steps {
                 sh 'docker login -uddtrampdocker -pabs122825618'
-                sh 'cd /var/jenkins_home/workspace/${JOB_NAME} docker build -t ddtrampdocker/test:${VERSION} . && docker push ddtrampdocker/test:${VERSION}'
+                sh 'cd /var/jenkins_home/workspace/${JOB_NAME} && docker build -t ddtrampdocker/test:${VERSION} . && docker push ddtrampdocker/test:${VERSION}'
             }
         }
     //     stage('Deliver') { 
