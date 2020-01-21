@@ -63,7 +63,7 @@ EOF
                 script {
                     server = getHost()
                     sshCommand remote: server, command: """
-			            docker login -uddtrampdocker -pabs122825618 && docker-compose -f docker-compose-test-ui.yml pull && docker-compose -f docker-compose-test-ui.yml up -d
+			            docker-compose -f docker-compose-test-ui.yml pull && docker-compose -f docker-compose-test-ui.yml up -d
                     """
                 }
             }
