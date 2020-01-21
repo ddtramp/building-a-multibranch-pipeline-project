@@ -1,3 +1,19 @@
+def getHost(){
+    def remote = [:]
+    remote.name = "test-ui"
+    remote.host = "172.17.141.69"
+    remote.user = "jack"
+    remote.password = "admin"
+    remote.port = 22
+    remote.allowAnyHosts = true
+    if (env.VERSION == 'dev') {
+        remote.host = "172.17.141.69"
+        remote.user = "jack"
+        remote.password = "admin"
+    }
+    return remote
+}
+
 pipeline {
     agent any
     // agent {
@@ -22,13 +38,36 @@ pipeline {
                 sh 'cd /var/jenkins_home/workspace/${JOB_NAME} && docker build -t ddtrampdocker/test:${VERSION} . && docker push ddtrampdocker/test:${VERSION}'
             }
         }
-    //     stage('Deliver') { 
-    //         steps {
-    //             sh './jenkins/scripts/deliver.sh' 
-    //             input message: 'Finished using the web site? (Click "Proceed" to continue)' 
-    //             sh './jenkins/scripts/kill.sh' 
-    //         }
-    //     }
+        stage('Deploy Images'){
+            steps {
+                script {
+                    server = getHost()
+                        sshCommand remote: server, command: """
+cat >docker-compose-test-ui.yml<<EOF
+#VERSION:${env.VERSION}
+version: '3.4'
+services:
+
+    edgepro-ui:
+        image: ddtrampdocker/test:${env.VERSION}
+        restart: always
+        ports:
+            - 80:80
+        environment:
+            version: ${env.VERSION}
+            lalala: http://192.168.199.220:5188
+
+EOF
+                        """
+                }
+                script {
+                    server = getHost()
+                    sshCommand remote: server, command: """
+			            docker login -ujack -padmin 172.17.141.69 && docker-compose -f docker-compose-test-ui.yml pull && docker-compose -f docker-compose-test-ui.yml up -d
+                    """
+                }
+            }
+        }
     }
 
     
