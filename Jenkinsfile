@@ -1,15 +1,15 @@
 def getHost(){
     def remote = [:]
     remote.name = "test-ui"
-    remote.host = "172.17.141.69"
-    remote.user = "jack"
-    remote.password = "admin"
+    remote.host = "172.17.0.3"
+    remote.user = "root"
+    remote.password = "root"
     remote.port = 22
     remote.allowAnyHosts = true
     if (env.VERSION == 'dev') {
-        remote.host = "172.17.141.69"
-        remote.user = "jack"
-        remote.password = "admin"
+        remote.host = "172.17.0.3"
+        remote.user = "root"
+        remote.password = "root"
     }
     return remote
 }
@@ -63,7 +63,7 @@ EOF
                 script {
                     server = getHost()
                     sshCommand remote: server, command: """
-			            docker login -ujack -padmin 172.17.141.69 && docker-compose -f docker-compose-test-ui.yml pull && docker-compose -f docker-compose-test-ui.yml up -d
+			            docker-compose -f docker-compose-test-ui.yml pull && docker-compose -f docker-compose-test-ui.yml up -d
                     """
                 }
             }
