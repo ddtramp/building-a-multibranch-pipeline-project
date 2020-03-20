@@ -55,7 +55,7 @@ services:
             - 80:80
         environment:
             version: ${env.VERSION}
-            lalala: http://192.168.199.220:5188
+            lalala: http://wwww.google.com
 
 EOF
                         """
