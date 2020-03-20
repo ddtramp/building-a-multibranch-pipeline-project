@@ -55,7 +55,7 @@ services:
             - 80:80
         environment:
             version: ${env.VERSION}
-            lalala: http://wwww.google.com
+            lalala: http://wwww.baidu.com
 
 EOF
                         """
